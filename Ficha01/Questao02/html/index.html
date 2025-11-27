@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questão 02 - Superfície de Revolução</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Superfície de Revolução com Curvas Paramétricas</h1>
+            <p class="subtitle">Modelagem 3D a partir de perfis 2D usando Bézier e B-Splines</p>
+        </header>
+
+        <div class="workspace">
+            <!-- Painel 2D - Perfil -->
+            <div class="panel panel-2d">
+                <div class="panel-header">
+                    <h2>📐 Perfil 2D</h2>
+                    <div class="panel-actions">
+                        <button id="clearProfile" class="btn btn-secondary">🗑️ Limpar</button>
+                        <button id="resetCamera2D" class="btn btn-secondary">🎯 Centralizar</button>
+                    </div>
+                </div>
+                <canvas id="canvas2D"></canvas>
+                <div class="canvas-info">
+                    <span id="profilePoints">Pontos: 0</span>
+                    <span id="profileHelp">📍 Coloque pontos no lado DIREITO do eixo</span>
+                </div>
+            </div>
+
+            <!-- Painel 3D - Superfície -->
+            <div class="panel panel-3d">
+                <div class="panel-header">
+                    <h2>🌐 Superfície 3D</h2>
+                    <div class="panel-actions">
+                        <button id="resetCamera3D" class="btn btn-secondary">🎥 Reset Câmera</button>
+                        <select id="viewMode" class="select-mode">
+                            <option value="solid">Sólido</option>
+                            <option value="wireframe">Wireframe</option>
+                            <option value="smooth">Suavizado</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="canvas3D"></div>
+                <div class="canvas-info">
+                    <span id="surfaceInfo">Vértices: 0 | Faces: 0</span>
+                    <span id="renderInfo">FPS: 60</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Controles -->
+        <aside class="controls-panel">
+            <div class="control-section">
+                <h3>🎨 Tipo de Curva</h3>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="curveType" value="bezier" checked>
+                        <span>Bézier (De Casteljau)</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="curveType" value="spline">
+                        <span>B-Spline (Cox-de Boor)</span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="curveDegree">Grau da Curva: <span id="degreeValue">3</span></label>
+                    <input type="range" id="curveDegree" min="1" max="5" value="3" class="slider">
+                </div>
+
+                <div class="form-group">
+                    <label for="curveResolution">Resolução 2D: <span id="resolutionValue">50</span></label>
+                    <input type="range" id="curveResolution" min="10" max="100" value="50" class="slider">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🔄 Revolução</h3>
+                <div class="form-group">
+                    <label for="axisSelect">Eixo de Revolução</label>
+                    <select id="axisSelect" class="select-input">
+                        <option value="y" selected>Y (Vertical)</option>
+                        <option value="x">X (Horizontal)</option>
+                        <option value="z">Z (Profundidade)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="revolutionAngle">Ângulo: <span id="angleValue">360</span>°</label>
+                    <input type="range" id="revolutionAngle" min="0" max="360" value="360" class="slider">
+                </div>
+
+                <div class="form-group">
+                    <label for="angularSubdivisions">Subdivisões: <span id="subdivValue">32</span></label>
+                    <input type="range" id="angularSubdivisions" min="4" max="128" value="32" class="slider">
+                </div>
+
+                <div class="info-box">
+                    <small>💡 A superfície é gerada automaticamente ao mover pontos ou ajustar parâmetros</small>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>💾 Exportar</h3>
+                <div class="export-buttons">
+                    <button id="exportJSON" class="btn btn-export">📄 JSON</button>
+                    <button id="exportOBJ" class="btn btn-export">📦 OBJ</button>
+                    <button id="exportSTL" class="btn btn-export">🔷 STL</button>
+                </div>
+            </div>
+
+            <div class="control-section info-section">
+                <h3>ℹ️ Instruções</h3>
+                <ul class="instructions">
+                    <li><strong>Perfil 2D:</strong> Adicione pontos no lado DIREITO do eixo (área azul clara)</li>
+                    <li><strong>Adicionar ponto:</strong> Clique no canvas 2D</li>
+                    <li><strong>Mover ponto:</strong> Arraste com o mouse</li>
+                    <li><strong>Remover ponto:</strong> Clique com botão direito</li>
+                    <li><strong>Rotacionar 3D:</strong> Arraste no canvas 3D</li>
+                    <li><strong>Zoom:</strong> Scroll do mouse</li>
+                    <li><strong>Dica:</strong> O perfil será rotacionado em torno do eixo para criar a superfície 3D</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- Módulos da aplicação -->
+    <script type="module" src="../js/main.js"></script>
+</body>
+</html>
