@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Computação Gráfica - Curvas Paramétricas</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Editor de Curvas Paramétricas</h1>
+            <p>Projeto de Computação Gráfica - Curvas de Bézier e Splines</p>
+        </header>
+
+        <!-- Abas para alternar entre Bézier e Spline -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="bezier">Curva de Bézier</button>
+            <button class="tab-button" data-tab="spline">Curva Spline</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Canvas para desenho -->
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="600"></canvas>
+                <div class="canvas-info">
+                    <span id="mouse-coords">Mouse: (0, 0)</span>
+                    <span id="point-count">Pontos: 0</span>
+                </div>
+            </div>
+
+            <!-- Painel de controles -->
+            <div class="controls-panel">
+                <!-- Controles de Bézier -->
+                <div id="bezier-controls" class="tab-content active">
+                    <h2>Controles de Bézier</h2>
+                    
+                    <div class="control-group">
+                        <h3>Ações</h3>
+                        <button id="add-point-bezier" class="btn btn-primary">Adicionar Ponto</button>
+                        <button id="clear-points-bezier" class="btn btn-secondary">Limpar Todos</button>
+                        <button id="remove-last-bezier" class="btn btn-secondary">Remover Último</button>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Parâmetros da Curva</h3>
+                        <label>
+                            Grau da Curva: <span id="bezier-degree-value">3</span>
+                            <input type="range" id="bezier-degree" min="1" max="10" value="3">
+                        </label>
+                        <label>
+                            Resolução (passos): <span id="bezier-steps-value">100</span>
+                            <input type="range" id="bezier-steps" min="10" max="200" value="100">
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Pontos de Controle</h3>
+                        <div id="bezier-points-list" class="points-list"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Visualização</h3>
+                        <label>
+                            <input type="checkbox" id="show-control-polygon-bezier" checked>
+                            Mostrar Polígono de Controle
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-points-bezier" checked>
+                            Mostrar Pontos de Controle
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-weights-bezier">
+                            Mostrar Pesos
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="export-bezier" class="btn btn-success">Exportar JSON</button>
+                    </div>
+                </div>
+
+                <!-- Controles de Spline -->
+                <div id="spline-controls" class="tab-content">
+                    <h2>Controles de Spline</h2>
+                    
+                    <div class="control-group">
+                        <h3>Ações</h3>
+                        <button id="add-point-spline" class="btn btn-primary">Adicionar Ponto</button>
+                        <button id="clear-points-spline" class="btn btn-secondary">Limpar Todos</button>
+                        <button id="remove-last-spline" class="btn btn-secondary">Remover Último</button>
+                        <button id="copy-from-bezier" class="btn btn-info">Copiar de Bézier</button>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Parâmetros da Curva</h3>
+                        <label>
+                            Grau da Spline: <span id="spline-degree-value">3</span>
+                            <input type="range" id="spline-degree" min="2" max="5" value="3">
+                        </label>
+                        <label>
+                            Passo de Interpolação: <span id="spline-step-value">0.01</span>
+                            <input type="range" id="spline-step" min="0.001" max="0.1" step="0.001" value="0.01">
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Pontos de Controle</h3>
+                        <div id="spline-points-list" class="points-list"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Visualização</h3>
+                        <label>
+                            <input type="checkbox" id="show-control-polygon-spline" checked>
+                            Mostrar Polígono de Controle
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-points-spline" checked>
+                            Mostrar Pontos de Controle
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="export-spline" class="btn btn-success">Exportar JSON</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Instruções: Clique no canvas para adicionar pontos. Arraste os pontos para movê-los. Use os controles para ajustar parâmetros.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts modulares -->
+    <script type="module" src="../js/bezier.js"></script>
+    <script type="module" src="../js/spline.js"></script>
+    <script type="module" src="../js/controlPoints.js"></script>
+    <script type="module" src="../js/renderer.js"></script>
+    <script type="module" src="../js/main.js"></script>
+</body>
+</html>
