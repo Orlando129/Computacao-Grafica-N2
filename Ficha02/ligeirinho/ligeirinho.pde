@@ -1,5 +1,7 @@
 // --- Configurações Globais ---
 PVector playerPos;
+PVector targetPos;    // Onde ele quer chegar
+int tempoParado = 0;  // Cronômetro para ele esperar um pouco antes de correr de novo
 float playerSpeed = 8.0; // Aumentei um pouco a velocidade
 PVector cameraPos;
 
@@ -18,20 +20,19 @@ void setup() {
   size(800, 600);
   noStroke();
   
-  // Inicializa posições
+  // Inicializa posições (Igual ao anterior)
   playerPos = new PVector(worldWidth / 2, worldHeight / 2);
   cameraPos = new PVector(0, 0);
   lightPos = new PVector(worldWidth / 2 + 100, worldHeight / 2 - 100);
   
-  // --- CARREGAMENTO DAS IMAGENS ---
-  // Certifique-se que as imagens estão na pasta "data" do sketch
-  // Se der erro aqui, é porque o Processing não achou o arquivo
+  // --- NOVO: Define o primeiro alvo aleatório ---
+  escolherNovoAlvo(); 
+
+  // Carregamento de imagens continua igual...
   imgParado = loadImage("parado.png");
   imgCorrendo[0] = loadImage("correndo1.png");
   imgCorrendo[1] = loadImage("correndo2.png");
-  
-  // Alinha o desenho das imagens pelo CENTRO (importante para inverter lado)
-  imageMode(CENTER); 
+  imageMode(CENTER);
 }
 
 void draw() {
@@ -56,26 +57,54 @@ void draw() {
 }
 
 void updatePlayer() {
-  estaAndando = false; // Resetamos o estado a cada frame
-  
-  if (keyPressed) {
-    if (keyCode == UP) { playerPos.y -= playerSpeed; estaAndando = true; }
-    if (keyCode == DOWN) { playerPos.y += playerSpeed; estaAndando = true; }
+  // Verificamos se ele deve estar correndo ou esperando
+  if (millis() > tempoParado) {
+    estaAndando = true;
     
-    if (keyCode == LEFT) { 
-      playerPos.x -= playerSpeed; 
-      estaAndando = true; 
-      direcao = -1; // Olha para esquerda
+    // 1. CÁLCULO VETORIAL DE DIREÇÃO
+    // Direção = Destino - Posição Atual
+    PVector direcaoMovimento = PVector.sub(targetPos, playerPos);
+    
+    // 2. CONTROLE DO SPRITE (ESQUERDA/DIREITA)
+    // Se o X do destino for maior que o atual, olha pra direita (1), senão esquerda (-1)
+    if (direcaoMovimento.x > 0) direcao = 1; 
+    else direcao = -1;
+    
+    // 3. MOVER OU CHEGAR
+    // Se a distância for menor que a velocidade, ele chegou (para evitar tremedeira)
+    if (direcaoMovimento.mag() < playerSpeed) {
+      playerPos = targetPos.copy(); // "Snap" para a posição final exata
+      estaAndando = false;          // Para a animação
+      
+      // Define um tempo de espera (ex: entre 500ms e 2 segundos)
+      tempoParado = millis() + int(random(500, 2000)); 
+      
+      // Escolhe para onde vai correr depois de descansar
+      escolherNovoAlvo();
+      
+    } else {
+      // Se ainda está longe, normalizamos o vetor (tamanho 1) e multiplicamos pela velocidade
+      direcaoMovimento.normalize();
+      direcaoMovimento.mult(playerSpeed);
+      playerPos.add(direcaoMovimento);
     }
-    if (keyCode == RIGHT) { 
-      playerPos.x += playerSpeed; 
-      estaAndando = true; 
-      direcao = 1; // Olha para direita
-    }
+    
+  } else {
+    // Se estamos no tempo de espera
+    estaAndando = false;
   }
   
+  // Mantém ele dentro do mundo (segurança)
   playerPos.x = constrain(playerPos.x, 0, worldWidth);
   playerPos.y = constrain(playerPos.y, 0, worldHeight);
+}
+
+// --- FUNÇÃO AUXILIAR NOVA ---
+void escolherNovoAlvo() {
+  // Sorteia uma posição X e Y dentro do tamanho do mundo (menos uma margem)
+  float x = random(50, worldWidth - 50);
+  float y = random(50, worldHeight - 50);
+  targetPos = new PVector(x, y);
 }
 
 void updateCamera() {
