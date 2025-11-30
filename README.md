@@ -10,17 +10,17 @@ Este projeto contém implementações de simulações interativas utilizando dif
           [@Orlando](https://github.com/Orlando129)
 - Projeto: Computação Gráfica - Avaliação N1
 
-**Visão geral rápida**
+## Visão geral rápida
 - Ficha 01: Experimentos com curvas, Bézier e renderização 2D/3D em JavaScript.
 - Ficha 02: Projeto em Processing (`ligeirinho`) com animação/recursos na pasta `Ficha02/ligeirinho`.
 
-**Pré-requisitos**
+## 🛠️Pré-requisitos
 - Navegador moderno com suporte a WebGL (Chrome, Firefox, Edge).
 - `node` / `npm` (opcional, para servidores locais como `http-server`).
 - `python3` (opcional, para servidor HTTP simples).
 - Processing IDE (para abrir e executar o sketch `.pde`).
 
-**Como executar (rápido)**
+## 🚀Como executar
 
 - Servir as páginas web (Ficha01)
    - Com `http-server` (recomendado):
@@ -45,7 +45,7 @@ Este projeto contém implementações de simulações interativas utilizando dif
       processing-java --sketch=Ficha02/ligeirinho --run
       ```
 
-**Estrutura do projeto (resumida)**
+## 📊Estrutura do projeto
 - `Ficha01/`
    - `Questao01/`
       - `html/index.html` — demo principal (2D/curvas)
@@ -61,12 +61,7 @@ Este projeto contém implementações de simulações interativas utilizando dif
       - `data/` — arquivos de dados usados pelo sketch
       - `DOCUMENTO_TECNICO.md`
 
-**Notas e dicas**
-- Sempre sirva arquivos estáticos por um servidor (não abra o `index.html` diretamente), pois alguns navegadores bloqueiam requisições locais relacionadas a módulos e recursos.
-- Se quiser inspecionar a lógica das curvas, abra os arquivos em `Ficha01/Questao01/js/` e `Ficha01/Questao02/js/`.
-- Para desenvolvimento rápido, use `npx http-server` (não precisa instalar globalmente).
-
-**Contribuição / Execução local**
+### Contribuição / Execução local
 - Clone o repositório e rode o servidor local:
    ```bash
    git clone <URL-do-repositório>
